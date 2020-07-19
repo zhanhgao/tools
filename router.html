@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>hash、history路由</title>
+    </head>
+
+    <body>
+        <!-- hash -->
+        <div id="hash">
+            <a href="#/login">登录页面</a>
+            <a href="#/register">注册页面</a>
+        </div>
+
+        <!-- history -->
+        <div id="history">
+          <button type="button" name="button" onclick="goBar()">bar.html</button>
+        </div>
+
+        <!-- contain内容展示区 -->
+        <div id="contain">
+
+        </div>
+    </body>
+
+
+    <script>
+        // hashchange
+        if ("onhashchange" in window) {
+            // 该浏览器支持 hashchange 事件!
+            window.addEventListener("hashchange", funcRef, false);
+        }
+        var ele = document.getElementById('contain');
+
+        function funcRef() {
+            var localHash = location.hash;
+            switch (localHash) {
+                case '#/login':
+                    ele.innerHTML = "<h1>登录页面</h1>"
+                    break;
+                case '#/register':
+                    ele.innerHTML = "<h1>注册页面</h1>"
+                    break;
+                default:
+                    break;
+            }
+        }
+    </script>
+    <script>
+    // history
+    // 1、http-server起个服务，访问
+    // 2、调用history.pushState()或者history.replaceState()不会触发popstate事件.popstate事件只会在浏览器某些行为下触发, 比如点击后退、前进按钮(或者在JavaScript中调用history.back()、history.forward()、history.go()方法).
+    function goBar(){
+      history.pushState({foo: "bar"}, "标题", "bar.html");
+      setTimeout(()=>{
+        history.back();
+      },500);
+    }
+    function urlChange () {
+      document.getElementById('contain').innerHTML="<h1>bar页面</h1>"
+    }
+    window.addEventListener('popstate', urlChange)
+    </script>
+
+
+</html>
